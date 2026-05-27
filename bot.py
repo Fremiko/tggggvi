@@ -3882,20 +3882,20 @@ def build_application(token: str) -> Application:
     app.add_handler(CommandHandler("love", mops_love))
     app.add_handler(CommandHandler("kiss", mops_kiss))
     app.add_handler(CommandHandler("hug", mops_hug))
-    
-# === РУССКИЕ КОМАНДЫ ===
-app.add_handler(CommandHandler("команды", start))
-app.add_handler(CommandHandler("гайд", start))
-app.add_handler(CommandHandler("баланс", balance))
-app.add_handler(CommandHandler("магазин", shop))
-app.add_handler(CommandHandler("ежедневка", daily))
-app.add_handler(CommandHandler("дуэль", duel))
-app.add_handler(CommandHandler("война", war))
-app.add_handler(CommandHandler("слова", words_status))
-app.add_handler(CommandHandler("брак", brak))
-app.add_handler(CommandHandler("альянс", alyans))
 
-mega_aliases = {
+    # === РУССКИЕ КОМАНДЫ ===
+    app.add_handler(CommandHandler("команды", start))
+    app.add_handler(CommandHandler("гайд", start))
+    app.add_handler(CommandHandler("баланс", balance))
+    app.add_handler(CommandHandler("магазин", shop))
+    app.add_handler(CommandHandler("ежедневка", daily))
+    app.add_handler(CommandHandler("дуэль", duel))
+    app.add_handler(CommandHandler("война", war))
+    app.add_handler(CommandHandler("слова", words_status))
+    app.add_handler(CommandHandler("брак", brak))
+    app.add_handler(CommandHandler("альянс", alyans))
+
+    mega_aliases = {
         "help": start, "menu": start, "guide": start, "manual": start, "info": start,
         "bal": balance, "wallet": balance, "money": balance, "coins": balance, "cash": balance,
         "store": shop, "market": shop, "mall": shop, "buyitem": buy, "purchase": buy,
@@ -3924,8 +3924,8 @@ mega_aliases = {
         "pricecheck": price_watch_check, "pricecompare": price_watch_compare, "pricebest": price_watch_best, "pricetarget": price_watch_target,
         "donateinfo": donate_info, "stars": donate_stars, "premium": donate_premium, "donatenote": donate_note,
     }
-for acmd, afn in mega_aliases.items():
-    app.add_handler(CommandHandler(acmd, afn))
+    for acmd, afn in mega_aliases.items():
+        app.add_handler(CommandHandler(acmd, afn))
 
     # 100+ безопасных алиасов команд
     extra_aliases = {
@@ -3971,6 +3971,8 @@ for acmd, afn in mega_aliases.items():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, marriage_ceremony_text), group=0)
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_ru_commands), group=1)
 
+    return app
+
 
 def main() -> None:
     global marriages, duel_stats, war_stats, word_games, raid_states, daily_rewards, inventories, mops_state, profiles, relations, trade_requests, minigames, mod_reports, quests, achievements, lottery, bank_data, xp_data, mod_state, price_watch, donate_log
@@ -4001,12 +4003,12 @@ def main() -> None:
         raise RuntimeError("Set BOT_TOKEN (or TELEGRAM_BOT_TOKEN) in environment")
 
     app = build_application(token)
-    if application.job_queue:
+    if app.job_queue:
         # Проверяем каждый час, но в чат отправляем только 1 раз в сутки.
-        application.job_queue.run_repeating(report_job, interval=3600, first=15, name="mops_daily")
-        application.job_queue.run_repeating(bank_interest_job, interval=3600, first=30, name="bank_interest")
-        application.job_queue.run_repeating(hoshi_scene_job, interval=3600, first=45, name="hoshi_scene")
-        application.job_queue.run_repeating(run_price_watch_job, interval=900, first=60, name="price_watch")
+        app.job_queue.run_repeating(report_job, interval=3600, first=15, name="mops_daily")
+        app.job_queue.run_repeating(bank_interest_job, interval=3600, first=30, name="bank_interest")
+        app.job_queue.run_repeating(hoshi_scene_job, interval=3600, first=45, name="hoshi_scene")
+        app.job_queue.run_repeating(run_price_watch_job, interval=900, first=60, name="price_watch")
     logger.info("Bot is running in polling mode")
     app.run_polling(drop_pending_updates=True, allowed_updates=Update.ALL_TYPES)
 

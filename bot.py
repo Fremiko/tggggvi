@@ -3883,18 +3883,6 @@ def build_application(token: str) -> Application:
     app.add_handler(CommandHandler("kiss", mops_kiss))
     app.add_handler(CommandHandler("hug", mops_hug))
 
-    # === РУССКИЕ КОМАНДЫ ===
-    app.add_handler(CommandHandler("команды", start))
-    app.add_handler(CommandHandler("гайд", start))
-    app.add_handler(CommandHandler("баланс", balance))
-    app.add_handler(CommandHandler("магазин", shop))
-    app.add_handler(CommandHandler("ежедневка", daily))
-    app.add_handler(CommandHandler("дуэль", duel))
-    app.add_handler(CommandHandler("война", war))
-    app.add_handler(CommandHandler("слова", words_status))
-    app.add_handler(CommandHandler("брак", brak))
-    app.add_handler(CommandHandler("альянс", alyans))
-
     mega_aliases = {
         "help": start, "menu": start, "guide": start, "manual": start, "info": start,
         "bal": balance, "wallet": balance, "money": balance, "coins": balance, "cash": balance,

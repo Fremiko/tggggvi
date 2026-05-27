@@ -1,1 +1,1 @@
-worker: python MOPS_BOT_AI_FINAL.py
+worker: python bot.py

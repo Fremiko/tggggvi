@@ -4457,6 +4457,7 @@ async def weather_fake(update, context):
 
 
 # ===== NEW COMMANDS =====
+app = Application.builder().token(BOT_TOKEN).build()
 app.add_handler(CommandHandler("бонус", bonus))
 app.add_handler(CommandHandler("реп", reputation))
 app.add_handler(CommandHandler("инвентарь", inventory))

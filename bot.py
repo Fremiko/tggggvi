@@ -1034,9 +1034,9 @@ async def razvod(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     if found:
         save_json(DATA_FILE, marriages)
-        await msg.reply_text("Р азвод выполнен")
+        await msg.reply_text("Развод выполнен")
     else:
-        await msg.reply_text("Рўы не в бСЂаке")
+        await msg.reply_text("ебланище ты не в Браке")
 
 
 async def anniversary(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -1319,7 +1319,7 @@ async def accept(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     key, req = find_request_for_target(chat_id, target)
     if not req:
-        await msg.reply_text("Для тебя нет активных дуэлей")
+        await msg.reply_text("Для тебя нет активных дуэлей , гуляй")
         return
 
     challenger = req["challenger"]
@@ -2100,7 +2100,7 @@ async def channel_guide(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 # === МОПС-ФАРМИЛА ФУНКЦИИ ===
 
 MOPS_GREETINGS = ["Привет! 🐶", "Здорово!", "Приветики!", "Хау!", "Привет, друг!"]
-MOPS_FAREWELLS = ["Пока! 🐶", "До свидания!", "Бай!", "Увидимся!"]
+MOPS_FAREWELLS = ["Пока! 🐶", "До свидания!", "Бай!", "Увидимся!", "Пиздуй, чудище", "Динаху", "бб лол хд"]
 MOPS_THANKS = ["Пожалуйста! 🐶", "Рад помочь!", "Обращайся!"]
 MOPS_JOKES = ["Почему программист ушёл? Потому что не получил массив.", "Что сказал ноль восьмёрке? Классный ремень!", "Штирлиц выстрелил вслепую. Слепая упала."]
 MOPS_QUOTES = ["«Всё будет хорошо» — неизвестный оптимист.", "«Работа не волк, но в лес не убежит».", "«Лучше поздно, чем никогда»."]

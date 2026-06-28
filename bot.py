@@ -13,6 +13,9 @@ import string
 import time
 import urllib.parse
 import urllib.request
+import http.server
+import socketserver
+import threading
 from datetime import datetime, timedelta
 from uuid import uuid4
 
@@ -4778,8 +4781,38 @@ def main() -> None:
         app.job_queue.run_repeating(bank_interest_job, interval=3600, first=30, name="bank_interest")
         app.job_queue.run_repeating(hoshi_scene_job, interval=3600, first=45, name="hoshi_scene")
         app.job_queue.run_repeating(run_price_watch_job, interval=900, first=60, name="price_watch")
+    # --- HTTP server: serve site/index.html on port 8080 ---
+    _site_path = os.path.join(BASE_DIR, "site", "index.html")
+
+    class _HelpHandler(http.server.BaseHTTPRequestHandler):
+        def do_GET(self):
+            if self.path in ("/", "/index.html"):
+                try:
+                    with open(_site_path, "rb") as f:
+                        body = f.read()
+                    self.send_response(200)
+                    self.send_header("Content-Type", "text/html; charset=utf-8")
+                    self.send_header("Content-Length", str(len(body)))
+                    self.end_headers()
+                    self.wfile.write(body)
+                except OSError:
+                    self.send_error(404, "site/index.html not found")
+            else:
+                self.send_error(404, "Not found")
+
+        def log_message(self, format, *args):  # silence access logs
+            pass
+
+    _httpd = socketserver.TCPServer(("0.0.0.0", 8080), _HelpHandler)
+    _httpd.allow_reuse_address = True
+    _http_thread = threading.Thread(target=_httpd.serve_forever, daemon=True)
+    _http_thread.start()
+    logger.info("Help site running on http://0.0.0.0:8080/")
+    # --------------------------------------------------------
+
     logger.info("Bot is running in polling mode")
     app.run_polling(drop_pending_updates=True, allowed_updates=Update.ALL_TYPES)
+
 
 
 if __name__ == "__main__":
